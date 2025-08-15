@@ -1,37 +1,28 @@
-let matchJsonUrl = ""; // Dynamic URL from input
+import express from 'express';
+import fetch from 'node-fetch';
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-function setMatch() {
-  const link = document.getElementById("matchLink").value;
-  const matchId = link.match(/\/scorecard\/(\d+)\//);
-  if (matchId) {
-    matchJsonUrl = `https://cricheroes.com/match/api/${matchId[1]}`;
-    fetchScore();
-    alert("Match loaded! Score will update every 5 seconds.");
-  } else {
-    alert("Invalid CricHeroes match link!");
-  }
-}
+app.use(express.static('public'));
 
-async function fetchScore() {
-  if (!matchJsonUrl) return;
+// Default match ID (CricHeroes)
+let matchID = '18726255';
+
+// API endpoint to get live score
+app.get('/api/score', async (req, res) => {
   try {
-    const response = await fetch(matchJsonUrl);
+    const response = await fetch(`https://cricheroes.in/live-video-scorecard-customize/${matchID}`);
     const data = await response.json();
-
-    document.getElementById("batsman1").innerText = data.batsmen[0]?.name || "-";
-    document.getElementById("batsman2").innerText = data.batsmen[1]?.name || "-";
-
-    document.getElementById("runs").innerText = data.runs || 0;
-    document.getElementById("wickets").innerText = data.wickets || 0;
-    document.getElementById("overs").innerText = data.overs || "0.0";
-
-    document.getElementById("bowlerName").innerText = data.currentBowler?.name || "-";
-    const bowlerStats = data.currentBowler ? `${data.currentBowler.runs}-${data.currentBowler.wickets} (${data.currentBowler.balls})` : "0-0 (0)";
-    document.getElementById("bowlerStats").innerText = bowlerStats;
-
+    res.json(data);
   } catch (err) {
-    console.error("Error fetching score:", err);
+    res.status(500).json({ error: 'Failed to fetch score' });
   }
-}
+});
 
-setInterval(fetchScore, 5000);
+// Optional: change match ID via query param
+app.get('/api/change-match/:id', (req, res) => {
+  matchID = req.params.id;
+  res.json({ message: `Match ID changed to ${matchID}` });
+});
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));setInterval(fetchScore, 5000);
