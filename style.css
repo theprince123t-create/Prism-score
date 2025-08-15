@@ -1,0 +1,46 @@
+body {
+  font-family: Arial, sans-serif;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+#overlay-container {
+  text-align: center;
+}
+
+#match-input {
+  margin-bottom: 20px;
+}
+
+#match-input input {
+  padding: 5px 10px;
+  width: 250px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+#match-input button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  background-color: #1b2a49;
+  color: white;
+  cursor: pointer;
+}
+
+#scorecard {
+  background: rgba(27, 42, 73, 0.9);
+  color: white;
+  padding: 20px 40px;
+  border-radius: 10px;
+  min-width: 300px;
+}
+
+#team1, #score, #bowler {
+  margin: 10px 0;
+  font-size: 18px;
+}

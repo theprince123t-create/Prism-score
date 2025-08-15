@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Cricket Score Overlay</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="overlay-container">
+
+  <!-- Input for CricHeroes Match Link -->
+  <div id="match-input">
+    <input type="text" id="matchLink" placeholder="Enter CricHeroes Match Link">
+    <button onclick="setMatch()">Load Match</button>
+  </div>
+
+  <!-- Scorecard Overlay -->
+  <div id="scorecard">
+    <div id="team1">
+      <span id="batsman1">-</span> & <span id="batsman2">-</span>
+    </div>
+    <div id="score">
+      <span id="runs">0</span>-<span id="wickets">0</span> (<span id="overs">0.0</span>)
+    </div>
+    <div id="bowler">
+      <span id="bowlerName">-</span>
+      <span id="bowlerStats">0-0 (0)</span>
+    </div>
+  </div>
+
+</div>
+
+<script src="score.js"></script>
+</body>
+</html>
