@@ -2,36 +2,49 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Live Cricket Score Overlay</title>
-<link rel="stylesheet" href="style.css">
+<title>Live Cricket Score</title>
+<style>
+  body { font-family: sans-serif; text-align: center; background: #111; color: #fff; }
+  #score { font-size: 28px; margin-top: 50px; }
+  input, button { font-size: 16px; padding: 5px 10px; margin: 5px; }
+</style>
 </head>
 <body>
 
-<div id="overlay-container">
+<h1>Live Cricket Score</h1>
 
-  <!-- Input for CricHeroes Match Link -->
-  <div id="match-input">
-    <input type="text" id="matchLink" placeholder="Enter CricHeroes Match Link">
-    <button onclick="setMatch()">Load Match</button>
-  </div>
+<input type="text" id="matchInput" placeholder="Enter Match ID">
+<button onclick="changeMatch()">Load Match</button>
 
-  <!-- Scorecard Overlay -->
-  <div id="scorecard">
-    <div id="team1">
-      <span id="batsman1">-</span> & <span id="batsman2">-</span>
-    </div>
-    <div id="score">
-      <span id="runs">0</span>-<span id="wickets">0</span> (<span id="overs">0.0</span>)
-    </div>
-    <div id="bowler">
-      <span id="bowlerName">-</span>
-      <span id="bowlerStats">0-0 (0)</span>
-    </div>
-  </div>
+<div id="score">Loading...</div>
 
-</div>
+<script>
+let matchID = '18726255';
+const scoreDiv = document.getElementById('score');
 
-<script src="score.js"></script>
+async function fetchScore() {
+  try {
+    const res = await fetch('/api/score');
+    const data = await res.json();
+    // Adjust based on actual data structure
+    scoreDiv.innerHTML = `${data.team1?.name || 'Team 1'}: ${data.team1?.runs || 0}/${data.team1?.wickets || 0}<br>
+                          ${data.team2?.name || 'Team 2'}: ${data.team2?.runs || 0}/${data.team2?.wickets || 0}`;
+  } catch (err) {
+    scoreDiv.innerHTML = "Error fetching score";
+    console.error(err);
+  }
+}
+
+async function changeMatch() {
+  matchID = document.getElementById('matchInput').value;
+  await fetch(`/api/change-match/${matchID}`);
+  fetchScore();
+}
+
+// Fetch every 5 seconds
+fetchScore();
+setInterval(fetchScore, 5000);
+</script>
+
 </body>
 </html>
